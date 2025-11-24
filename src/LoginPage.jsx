@@ -1,5 +1,7 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
+import Cookies from 'js-cookie';
 
 const USERS_TYPES = {
     NONE: 0,
@@ -18,65 +20,71 @@ function LoginPage () {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loginStatus, setLoginStatus] = useState(LOGIN_STATUSES.PENDING);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        if (username.length > 0 && password.length === 6) {
-            axios.get("http://localhost:8080/login", {
-                params: {username, password}
-            }).then(response => {
-                if (response.data.success) {
-                    setLoginStatus(LOGIN_STATUSES.SUCCESS)
-                } else {
-                    setLoginStatus(LOGIN_STATUSES.FAILURE)
-                }
-            })
+        const token = Cookies.get("token");
+        if (token != null) {
+            navigate("/dashboard")
         }
-    }, [username, password]);
+    }, [navigate])
 
     return (
         <>
-            {
-                loginStatus == LOGIN_STATUSES.SUCCESS ?
-                    <>
-                        Success
-                    </>
-                    :
-                    <>
-                        <div>
-                            {
-                                loginStatus == LOGIN_STATUSES.FAILURE &&
-                                <div>
-                                    Wrong credentials!
-                                </div>
-                            }
-                            <select value={selectedType} onChange={(event) => {
-                                setSelectedType(event.target.value);
-                            }}>
-                                <option disabled={true} value={USERS_TYPES.NONE}>
-                                    Select type
-                                </option>
-                                <option value={USERS_TYPES.CLIENT}>
-                                    Client
-                                </option>
-                                <option value={USERS_TYPES.PROFESSIONALIST}>
-                                    Professionalist
-                                </option>
-                            </select>
-                            <div>
-                                <input type={"text"} value={username} onChange={(event) => {
-                                    setUsername(event.target.value);
-                                }}/>
-                            </div>
-                            <div>
-                                <input type={"password"} value={password} onChange={(event) => {
-                                    setPassword(event.target.value);
-                                }}/>
-                            </div>
-                        </div>
+            <div>
+                {
+                    loginStatus == LOGIN_STATUSES.FAILURE &&
+                    <div>
+                        Wrong credentials!
+                    </div>
+                }
+                <select value={selectedType} onChange={(event) => {
+                    setSelectedType(event.target.value);
+                }}>
+                    <option disabled={true} value={USERS_TYPES.NONE}>
+                        Select type
+                    </option>
+                    <option value={USERS_TYPES.CLIENT}>
+                        Client
+                    </option>
+                    <option value={USERS_TYPES.PROFESSIONALIST}>
+                        Professionalist
+                    </option>
+                </select>
+                <div>
+                    <input type={"text"} value={username} onChange={(event) => {
+                        setUsername(event.target.value);
+                    }}/>
+                </div>
+                <div>
+                    <input type={"password"} value={password} onChange={(event) => {
+                        setPassword(event.target.value);
+                    }}/>
+                </div>
+                <div>
+                    <button
+                        disabled={password.length != 6}
 
-                    </>
-            }
+                        onClick={() => {
+                            axios.get("http://localhost:8080/login", {
+                                params: {username, password}
+                            }).then(response => {
+                                if (response.data.success) {
+                                    Cookies.set('token', response.data.token)
+                                    navigate("/dashboard");
+                                } else {
+                                    setLoginStatus(LOGIN_STATUSES.FAILURE)
+                                }
+                            })
+
+                        }}>
+                        Sign In
+                    </button>
+                </div>
+            </div>
+
         </>
+
     )
 
 }
