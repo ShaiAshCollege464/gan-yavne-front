@@ -1,7 +1,9 @@
 import './App.css'
 import LoginPage from "./LoginPage.jsx";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import HomePage from "./HomePage.jsx";
+import ClientDashboard from "./ClientDashboard.jsx";
+import ProfessionalDashboard from "./ProfessionalDashboard.tsx";
+import DashboardWrapper from "./DashboardWrapper.js";
 
 function App() {
 
@@ -10,7 +12,7 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path={"/"} element={<LoginPage />}/>
-                    <Route path={"/dashboard"} element={<HomePage/>}/>
+                    <Route path={"/dashboard"} element={<DashboardWrapper/>}/>
                 </Routes>
             </BrowserRouter>
 

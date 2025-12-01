@@ -64,15 +64,19 @@ function LoginPage () {
                 </div>
                 <div>
                     <button
-                        disabled={password.length != 6}
+                        disabled={password.length != 6 || username.length == 0 || selectedType == USERS_TYPES.NONE}
 
                         onClick={() => {
                             axios.get("http://localhost:8080/login", {
-                                params: {username, password}
+                                params: {username, password, selectedType}
                             }).then(response => {
                                 if (response.data.success) {
                                     Cookies.set('token', response.data.token)
-                                    navigate("/dashboard");
+                                    if (response.data.userType == USERS_TYPES.CLIENT) {
+                                        navigate("/dashboard");
+                                    } else {
+                                        navigate("/dashboard");
+                                    }
                                 } else {
                                     setLoginStatus(LOGIN_STATUSES.FAILURE)
                                 }
