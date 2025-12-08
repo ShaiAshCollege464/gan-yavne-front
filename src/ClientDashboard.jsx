@@ -4,7 +4,7 @@ import axios from "axios";
 import Cookies from 'js-cookie';
 import Modal from "react-modal";
 
-function ClientDashboard () {
+function ClientDashboard() {
     const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
@@ -12,13 +12,12 @@ function ClientDashboard () {
 
     const getPosts = () => {
         const token = Cookies.get("token");
-        axios.get("http://localhost:8080/get-posts", {
+        axios.get("http://localhost:8080/get-user-posts", {
             params: {token: token}
         }).then(response => {
             setPosts(response.data.posts);
         })
     }
-
 
     useEffect(() => {
         const token = Cookies.get("token");
@@ -45,9 +44,7 @@ function ClientDashboard () {
                         setModalOpen(false)
                     }}
                     isOpen={modalOpen}
-                    style={{
-
-                    }}
+                    style={{}}
                     contentLabel="Example Modal"
                 >
                     <div>
@@ -66,7 +63,8 @@ function ClientDashboard () {
                                 getPosts();
                             })
 
-                        }}>Add</button>
+                        }}>Add
+                        </button>
                     </div>
                 </Modal>
             </div>
