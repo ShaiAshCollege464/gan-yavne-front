@@ -82,6 +82,9 @@ function ClientDashboard() {
                     <th>
                         Image
                     </th>
+                    <th>
+                        //delete
+                    </th>
 
                 </tr>
                 {
@@ -102,6 +105,18 @@ function ClientDashboard() {
                                         width: 100,
                                         height: 50
                                     }} src={item.fileLink}/>
+                                </td>
+                                <td>
+                                    <button onClick={() => {
+                                        const token = Cookies.get("token");
+                                        axios.get("http://localhost:8080/delete-post", {
+                                            params: {postId: item.id, token: token}
+                                        }).then(response => {
+                                            getPosts();
+                                        })
+
+                                    }}>DELETE
+                                    </button>
                                 </td>
 
                             </tr>
