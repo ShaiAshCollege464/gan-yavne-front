@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import Cookies from 'js-cookie';
+import {HOST} from "./Constants.js";
 
 const USERS_TYPES = {
     NONE: 0,
@@ -67,7 +68,7 @@ function LoginPage () {
                         disabled={password.length != 6 || username.length == 0 || selectedType == USERS_TYPES.NONE}
 
                         onClick={() => {
-                            axios.get("http://localhost:8080/login", {
+                            axios.get(HOST + "login", {
                                 params: {username, password, selectedType}
                             }).then(response => {
                                 if (response.data.success) {

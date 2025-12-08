@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import Cookies from 'js-cookie';
 import Modal from "react-modal";
+import {HOST} from "./Constants.js";
 
 function ClientDashboard() {
     const navigate = useNavigate();
@@ -12,7 +13,7 @@ function ClientDashboard() {
 
     const getPosts = () => {
         const token = Cookies.get("token");
-        axios.get("http://localhost:8080/get-user-posts", {
+        axios.get(HOST + "get-user-posts", {
             params: {token: token}
         }).then(response => {
             setPosts(response.data.posts);
@@ -57,7 +58,7 @@ function ClientDashboard() {
                         <button onClick={() => {
                             setModalOpen(false);
                             const token = Cookies.get("token");
-                            axios.get("http://localhost:8080/add-post", {
+                            axios.get(HOST + "/add-post", {
                                 params: {text: postText, token}
                             }).then(response => {
                                 getPosts();
@@ -109,7 +110,7 @@ function ClientDashboard() {
                                 <td>
                                     <button onClick={() => {
                                         const token = Cookies.get("token");
-                                        axios.get("http://localhost:8080/delete-post", {
+                                        axios.get(HOST + "/delete-post", {
                                             params: {postId: item.id, token: token}
                                         }).then(response => {
                                             getPosts();

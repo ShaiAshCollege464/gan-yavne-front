@@ -5,6 +5,8 @@ import ProfessionalDashboard from "./ProfessionalDashboard"
 import Cookies from 'js-cookie';
 import {useNavigate} from "react-router-dom";
 import CustomPage from "./CustomPage";
+import {HOST} from "./Constants";
+
 
 function DashboardWrapper () {
     const [userType, setUserType] = useState(0);
@@ -15,7 +17,7 @@ function DashboardWrapper () {
         if (!token) {
             navigate("/")
         } else {
-            axios.get("http://localhost:8080/get-default-params", {
+            axios.get( HOST +"/get-default-params", {
                 params: {token: token}
             }).then(response => {
                 setUserType(response.data.userType)
