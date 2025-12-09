@@ -16,7 +16,7 @@ const LOGIN_STATUSES = {
     FAILURE: 2
 }
 
-function LoginPage () {
+function LoginPage() {
     const [selectedType, setSelectedType] = useState(USERS_TYPES.NONE);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -54,18 +54,18 @@ function LoginPage () {
                     </option>
                 </select>
                 <div>
-                    <input type={"text"} value={username} onChange={(event) => {
+                    <input placeholder={"username"} type={"text"} value={username} onChange={(event) => {
                         setUsername(event.target.value);
                     }}/>
                 </div>
                 <div>
-                    <input type={"password"} value={password} onChange={(event) => {
+                    <input placeholder={"password"} type={"password"} value={password} onChange={(event) => {
                         setPassword(event.target.value);
                     }}/>
                 </div>
                 <div>
                     <button
-                        disabled={password.length != 6 || username.length == 0 || selectedType == USERS_TYPES.NONE}
+                        disabled={username.length == 0 || password.length != 6 || selectedType == USERS_TYPES.NONE}
 
                         onClick={() => {
                             axios.get(HOST + "login", {
@@ -87,6 +87,14 @@ function LoginPage () {
                         Sign In
                     </button>
                 </div>
+                <div>
+                    <button
+                        onClick={()=>
+                            navigate("/signup")
+                        }>
+                        Sign Up
+                    </button>
+                </div>
             </div>
 
         </>
@@ -94,4 +102,5 @@ function LoginPage () {
     )
 
 }
+
 export default LoginPage;
