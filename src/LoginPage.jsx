@@ -114,6 +114,7 @@ function LoginPage() {
                 </div>
                 <div>
                     <button
+                        className="login-btn"
                         onClick={()=>
                             navigate("/signup")
                         }>
