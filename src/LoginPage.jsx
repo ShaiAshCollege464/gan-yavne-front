@@ -2,7 +2,9 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import Cookies from 'js-cookie';
-import {HOST} from "./Constants.js";
+import {HOST} from './Constants.js';
+import image from "./assets/login_image.svg";
+import './LoginPage.css'
 
 const USERS_TYPES = {
     NONE: 0,
@@ -30,60 +32,83 @@ function LoginPage() {
         }
     }, [navigate])
 
+    const handleLogin = () => {
+        axios.get(HOST + "login", {
+            params: {username, password, selectedType}
+        }).then(response => {
+            if (response.data.success) {
+                Cookies.set('token', response.data.token)
+                navigate("/dashboard");
+            } else {
+                setLoginStatus(LOGIN_STATUSES.FAILURE)
+            }
+        }).catch(err => {
+            console.error(err);
+            setLoginStatus(LOGIN_STATUSES.FAILURE);
+        });
+    };
 
     return (
-        <>
-            <div>
-                {
-                    loginStatus == LOGIN_STATUSES.FAILURE &&
-                    <div>
-                        Wrong credentials!
+        <div className="login-container">
+            <div className="login-card">
+                {/* צד שמאל - תמונה */}
+                <div className="login-image-section">
+                    <img src={image} alt="Login Illustration" className="hero-image"/>
+                </div>
+
+                {/* צד ימין - טופס */}
+                <div className="login-form-section">
+                    <div className="form-header">
+                        <h2>Welcome Back</h2>
+                        <p>Please enter your details to sign in.</p>
                     </div>
-                }
-                <select value={selectedType} onChange={(event) => {
-                    setSelectedType(event.target.value);
-                }}>
-                    <option disabled={true} value={USERS_TYPES.NONE}>
-                        Select type
-                    </option>
-                    <option value={USERS_TYPES.CLIENT}>
-                        Client
-                    </option>
-                    <option value={USERS_TYPES.PROFESSIONALIST}>
-                        Professionalist
-                    </option>
-                </select>
-                <div>
-                    <input placeholder={"username"} type={"text"} value={username} onChange={(event) => {
-                        setUsername(event.target.value);
-                    }}/>
-                </div>
-                <div>
-                    <input placeholder={"password"} type={"password"} value={password} onChange={(event) => {
-                        setPassword(event.target.value);
-                    }}/>
-                </div>
-                <div>
+
+                    {loginStatus === LOGIN_STATUSES.FAILURE && (
+                        <div className="error-message">
+                            Wrong credentials or connection error!
+                        </div>
+                    )}
+
+                    <div className="form-group">
+                        <label>User Type</label>
+                        <div className="select-wrapper">
+                            <select
+                                value={selectedType}
+                                onChange={(e) => setSelectedType(Number(e.target.value))}
+                                className={selectedType === USERS_TYPES.NONE ? "placeholder" : ""}
+                            >
+                                <option disabled value={USERS_TYPES.NONE}>Select type</option>
+                                <option value={USERS_TYPES.CLIENT}>Client</option>
+                                <option value={USERS_TYPES.PROFESSIONALIST}>Professionalist</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className="form-group">
+                        <label>Username</label>
+                        <input
+                            type="text"
+                            placeholder="Enter your username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Password</label>
+                        <input
+                            type="password"
+                            placeholder="Enter 6-digit password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </div>
+
                     <button
-                        disabled={username.length == 0 || password.length != 6 || selectedType == USERS_TYPES.NONE}
-
-                        onClick={() => {
-                            axios.get(HOST + "login", {
-                                params: {username, password, selectedType}
-                            }).then(response => {
-                                if (response.data.success) {
-                                    Cookies.set('token', response.data.token)
-                                    if (response.data.userType == USERS_TYPES.CLIENT) {
-                                        navigate("/dashboard");
-                                    } else {
-                                        navigate("/dashboard");
-                                    }
-                                } else {
-                                    setLoginStatus(LOGIN_STATUSES.FAILURE)
-                                }
-                            })
-
-                        }}>
+                        className="login-btn"
+                        disabled={password.length !== 6 || username.length === 0 || selectedType === USERS_TYPES.NONE}
+                        onClick={handleLogin}
+                    >
                         Sign In
                     </button>
                 </div>
@@ -96,11 +121,7 @@ function LoginPage() {
                     </button>
                 </div>
             </div>
-
-        </>
-
-    )
-
+        </div>
+    );
 }
-
 export default LoginPage;
