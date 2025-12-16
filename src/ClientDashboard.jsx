@@ -10,6 +10,8 @@ function ClientDashboard() {
     const [posts, setPosts] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [postText, setPostText] = useState("");
+    const [postFileLink, setPostFileLink] = useState("");
+    const [postArea, setPostArea] = useState("");
 
     const getPosts = () => {
         const token = Cookies.get("token");
@@ -28,6 +30,7 @@ function ClientDashboard() {
             getPosts();
         }
     }, [navigate]);
+
 
 
     return (
@@ -52,15 +55,23 @@ function ClientDashboard() {
                         <input value={postText} onChange={(event) => {
                             setPostText(event.target.value)
                         }} placeholder={"Enter the post description: "}/>
-                        <input placeholder={"Enter the post category"}/>
-                        <input placeholder={"Enter the post area: "}/>
-                        <input placeholder={"Enter the post image link: "}/>
+                        <input  placeholder={"Enter the post category"}/>
+                        <input value={postArea} onChange={(event) => {
+                            setPostArea(event.target.value)
+                        }} placeholder={"Enter the post area: "}/>
+                        <input value={postFileLink} onChange={(event) => {
+                            setPostFileLink(event.target.value)
+                        }} placeholder={"Enter the post image link: "}/>
                         <button onClick={() => {
                             setModalOpen(false);
                             const token = Cookies.get("token");
                             axios.get(HOST + "/add-post", {
-                                params: {text: postText, token}
+                                params: {text: postText,area: postArea, fileLink: postFileLink ,token}
                             }).then(response => {
+                                setPostFileLink("");
+                                setPostArea("");
+                                setPostText("");
+
                                 getPosts();
                             })
 
