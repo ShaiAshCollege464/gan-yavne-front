@@ -88,7 +88,7 @@ function ClientDashboard() {
                             setPostFileLink(event.target.value)
                         }} placeholder={"Enter the post image link: "}/>
                         <button
-                            disabled={postText === "" || postFileLink === "" || postArea === ""}
+                            disabled={postText === "" || postFileLink === "" || postArea === "" || postCategory === NOT_SELECTED_CATEGORY}
                             onClick={() => {
                                 setModalOpen(false);
                                 const token = Cookies.get("token");
