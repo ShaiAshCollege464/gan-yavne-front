@@ -6,12 +6,17 @@ import Modal from "react-modal";
 import {HOST} from "./Constants.js";
 
 function ClientDashboard() {
+    const NOT_SELECTED_CATEGORY = 0;
     const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [postText, setPostText] = useState("");
     const [postFileLink, setPostFileLink] = useState("");
     const [postArea, setPostArea] = useState("");
+    const [categories, setCategories] = useState([]);
+    const [postCategory,setPostCategory] = useState(NOT_SELECTED_CATEGORY);
+
+
 
     const getPosts = () => {
         const token = Cookies.get("token");
@@ -21,6 +26,15 @@ function ClientDashboard() {
             setPosts(response.data.posts);
         })
     }
+    const getCategories = () => {
+        const token = Cookies.get("token");
+        axios.get(HOST + "get-all-categories", {
+            params: {token: token}
+        }).then(response => {
+            setCategories(response.data.categories);
+        })
+    }
+
 
     useEffect(() => {
         const token = Cookies.get("token");
@@ -28,6 +42,7 @@ function ClientDashboard() {
             navigate("/")
         } else {
             getPosts();
+            getCategories();
         }
     }, [navigate]);
 
@@ -55,27 +70,40 @@ function ClientDashboard() {
                         <input value={postText} onChange={(event) => {
                             setPostText(event.target.value)
                         }} placeholder={"Enter the post description: "}/>
-                        <input  placeholder={"Enter the post category"}/>
+                        <select
+                            value={postCategory}
+                            onChange={(e) => setPostCategory(Number(e.target.value))}
+                        >
+                            <option disabled value={NOT_SELECTED_CATEGORY}>Select Category</option>
+                            {categories.map(item =>{
+                                return(
+                                    <option value={item.id}>{item.name}</option>
+                                )
+                            })}
+                        </select>
                         <input value={postArea} onChange={(event) => {
                             setPostArea(event.target.value)
                         }} placeholder={"Enter the post area: "}/>
                         <input value={postFileLink} onChange={(event) => {
                             setPostFileLink(event.target.value)
                         }} placeholder={"Enter the post image link: "}/>
-                        <button onClick={() => {
-                            setModalOpen(false);
-                            const token = Cookies.get("token");
-                            axios.get(HOST + "/add-post", {
-                                params: {text: postText,area: postArea, fileLink: postFileLink ,token}
-                            }).then(response => {
-                                setPostFileLink("");
-                                setPostArea("");
-                                setPostText("");
+                        <button
+                            disabled={postText === "" || postFileLink === "" || postArea === ""}
+                            onClick={() => {
+                                setModalOpen(false);
+                                const token = Cookies.get("token");
+                                axios.get(HOST + "/add-post", {
+                                    params: {text: postText, area: postArea, fileLink: postFileLink,categoryId:postCategory, token}
+                                }).then(response => {
+                                    setPostFileLink("");
+                                    setPostArea("");
+                                    setPostText("");
+                                    setPostCategory(NOT_SELECTED_CATEGORY);
 
-                                getPosts();
-                            })
+                                    getPosts();
+                                })
 
-                        }}>Add
+                            }}>Add
                         </button>
                     </div>
                 </Modal>
