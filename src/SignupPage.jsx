@@ -22,7 +22,7 @@ function SignupPage() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [contactInfo, setContactInfo] = useState("");
-    const [fullname, setFullname] = useState("");
+    const [fullName, setFullName] = useState("");
     const [address, setAddress] = useState("")
 
     const [areas, setAreas] = useState("")
@@ -33,7 +33,7 @@ function SignupPage() {
     return (
         <>
             {
-                signupStatus == SIGNUP_STATUSES.FAILURE &&
+                signupStatus === SIGNUP_STATUSES.FAILURE &&
                 <div>
                     Something Wrong...
                 </div>
@@ -53,7 +53,7 @@ function SignupPage() {
                 </option>
             </select>
             {
-                selectedType != USERS_TYPES.NONE &&
+                selectedType !== USERS_TYPES.NONE &&
                 <>
                     <div>
                         <input placeholder={"username"} type={"text"} value={username} onChange={(event) => {
@@ -71,17 +71,20 @@ function SignupPage() {
                         }}/>
                     </div>
                     <div>
-                        <input placeholder={"full name"} type={"text"} value={fullname} onChange={(event) => {
-                            setFullname(event.target.value);
-                        }}/>
-                    </div>
-                    <div>
-                        <input placeholder={"address"} type={"text"} value={address} onChange={(event) => {
-                            setAddress(event.target.value);
+                        <input placeholder={"full name"} type={"text"} value={fullName} onChange={(event) => {
+                            setFullName(event.target.value);
                         }}/>
                     </div>
                     {
-                        selectedType == USERS_TYPES.PROFESSIONALIST &&
+                        selectedType === USERS_TYPES.CLIENT &&
+                        <div>
+                            <input placeholder={"address"} type={"text"} value={address} onChange={(event) => {
+                                setAddress(event.target.value);
+                            }}/>
+                        </div>
+                    }
+                    {
+                        selectedType === USERS_TYPES.PROFESSIONALIST &&
                         <>
                             <div>
                                 <input placeholder={"areas"} type={"text"} value={areas} onChange={(event) => {
@@ -100,26 +103,22 @@ function SignupPage() {
             <div>
                 <button
                     disabled={
-                        username.length == 0
-                        || password.length != 6
-                        || selectedType == USERS_TYPES.NONE
-                        || contactInfo.length == 0
-                        || !fullname.includes(" ")
-                        || address.length == 0
-                        || ((selectedType==USERS_TYPES.PROFESSIONALIST) && areas.length==0)
-                        || ((selectedType==USERS_TYPES.PROFESSIONALIST) && plan.length==0)
+                        username.length === 0
+                        || password.length !== 6
+                        || selectedType === USERS_TYPES.NONE
+                        || contactInfo.length === 0
+                        || !fullName.includes(" ")
+                        || ((selectedType === USERS_TYPES.CLIENT) && address.length === 0)
+                        || ((selectedType===USERS_TYPES.PROFESSIONALIST) && areas.length===0)
+                        || ((selectedType===USERS_TYPES.PROFESSIONALIST) && plan.length===0)
                 }
                     onClick={() => {
                         axios.get(HOST + "signup", {
-                            params: {selectedType, username, password, fullname, address, areas, plan}
+                            params: {selectedType, username, password,fullName, address, areas, plan,contactInfo}
                         }).then(response => {
                             if (response.data.success) {
                                 Cookies.set('token', response.data.token)
-                                if (response.data.userType == USERS_TYPES.CLIENT) {
-                                    navigate("/dashboard");
-                                } else {
-                                    navigate("/dashboard");
-                                }
+                                navigate("/dashboard");
                             } else {
                                 setSignupStatus(SIGNUP_STATUSES.FAILURE)
                             }
