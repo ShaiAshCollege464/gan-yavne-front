@@ -8,7 +8,7 @@ import CustomPage from "./CustomPage";
 import {HOST} from "./Constants";
 
 
-function DashboardWrapper () {
+function DashboardWrapper() {
     const [userType, setUserType] = useState(0);
     const navigate = useNavigate();
 
@@ -17,33 +17,30 @@ function DashboardWrapper () {
         if (!token) {
             navigate("/")
         } else {
-            axios.get( HOST +"/get-default-params", {
+            axios.get(HOST + "/get-default-params", {
                 params: {token: token}
             }).then(response => {
                 setUserType(response.data.userType)
             })
-
         }
-
     }, []);
-
 
 
     if (userType == 1) {
         return (
             <CustomPage>
-                <ClientDashboard />
+                <ClientDashboard/>
             </CustomPage>
 
         )
     } else if (userType == 2) {
-        return  (
+        return (
             <CustomPage>
-                <ProfessionalDashboard />
+                <ProfessionalDashboard/>
             </CustomPage>
         )
     } else {
-        return  (
+        return (
             <CustomPage>
                 LOADING...
             </CustomPage>

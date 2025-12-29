@@ -4,6 +4,7 @@ import axios from "axios";
 import Cookies from 'js-cookie';
 import Modal from "react-modal";
 import {HOST} from "./Constants.js";
+import CustomButton from "./custom/CustomButton.jsx";
 
 function ClientDashboard() {
     const NOT_SELECTED_CATEGORY = 0;
@@ -15,6 +16,8 @@ function ClientDashboard() {
     const [postArea, setPostArea] = useState("");
     const [categories, setCategories] = useState([]);
     const [postCategory,setPostCategory] = useState(NOT_SELECTED_CATEGORY);
+    const [searchValue, setSearchValue] = useState("");
+    const [myProposals, setMyProposals] = useState([]);
 
 
 
@@ -26,6 +29,16 @@ function ClientDashboard() {
             setPosts(response.data.posts);
         })
     }
+
+    const getProposals = () => {
+        const token = Cookies.get("token");
+        axios.get(HOST + "my-proposals", {
+            params: {token: token}
+        }).then(response => {
+            setMyProposals(response.data.bids);
+        })
+    }
+
     const getCategories = () => {
         const token = Cookies.get("token");
         axios.get(HOST + "get-all-categories", {
@@ -43,21 +56,32 @@ function ClientDashboard() {
         } else {
             getPosts();
             getCategories();
+            getProposals();
         }
     }, [navigate]);
 
+    const filter = () => {
+        const result =  posts.filter(item => {
+            if (item.text.includes(searchValue)) {
+                return true;
+            } else {
+                return false;
+            }
+        })
 
+        return result;
+    }
 
     return (
         <div>
-            Home Page
-
+            Dashboard
             <div>
-                <button onClick={() => {
+                <input value={searchValue} type={"search"} onChange={(event) => {
+                    setSearchValue(event.target.value)
+                }}/>
+                <CustomButton text={"Add New Post"} onClick={() => {
                     setModalOpen(true);
-                }}>
-                    Add New Post
-                </button>
+                }}/>
                 <Modal
                     onRequestClose={() => {
                         setModalOpen(false)
@@ -87,7 +111,7 @@ function ClientDashboard() {
                         <input value={postFileLink} onChange={(event) => {
                             setPostFileLink(event.target.value)
                         }} placeholder={"Enter the post image link: "}/>
-                        <button
+                        <CustomButton
                             disabled={postText === "" || postFileLink === "" || postArea === "" || postCategory === NOT_SELECTED_CATEGORY}
                             onClick={() => {
                                 setModalOpen(false);
@@ -99,71 +123,107 @@ function ClientDashboard() {
                                     setPostArea("");
                                     setPostText("");
                                     setPostCategory(NOT_SELECTED_CATEGORY);
-
                                     getPosts();
                                 })
-
-                            }}>Add
-                        </button>
+                            }}
+                            text={"Add"}
+                        />
                     </div>
                 </Modal>
             </div>
-            <table>
-                <tr>
-                    <th>
-                        Text
-                    </th>
-                    <th>
-                        Area
-                    </th>
-                    <th>
-                        Category
-                    </th>
-                    <th>
-                        Image
-                    </th>
-                    <th>
-                        //delete
-                    </th>
+            {
+                filter().length > 0 ?
+                    <table style={{
+                        borderCollapse: "collapse",
+                        width: "100%"
+                    }}>
+                        <tr>
+                            <th>
+                                Text
+                            </th>
+                            <th>
+                                Area
+                            </th>
+                            <th>
+                                Category
+                            </th>
+                            <th>
+                                Image
+                            </th>
+                            <th>
+                                //delete
+                            </th>
 
-                </tr>
+                        </tr>
+                        {
+                            filter().map(item => {
+                                return (
+                                    <tr>
+                                        <td>
+                                            {item.text}
+                                        </td>
+                                        <td>
+                                            {item.area}
+                                        </td>
+                                        <td>
+                                            {item.categoryName}
+                                        </td>
+                                        <td>
+                                            <img style={{
+                                                width: 100,
+                                                height: 50
+                                            }} src={item.fileLink}/>
+                                        </td>
+                                        <td>
+                                            <button onClick={() => {
+                                                const token = Cookies.get("token");
+                                                axios.get(HOST + "/delete-post", {
+                                                    params: {postId: item.id, token: token}
+                                                }).then(response => {
+                                                    getPosts();
+                                                })
+
+                                            }}>DELETE
+                                            </button>
+                                        </td>
+
+                                    </tr>
+                                )
+                            })
+                        }
+                    </table>:
+                    <>
+                        No Posts Yet
+                    </>
+            }
+
+            <div>
+                <table>
+                    <tr>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            Proposal
+                        </th>
+                    </tr>
+                </table>
                 {
-                    posts.map(item => {
+                    myProposals.map(item => {
                         return (
                             <tr>
                                 <td>
-                                    {item.text}
+                                    {item.description}
                                 </td>
                                 <td>
-                                    {item.area}
+                                    {item.proposedPrice}
                                 </td>
-                                <td>
-                                    {item.categoryName}
-                                </td>
-                                <td>
-                                    <img style={{
-                                        width: 100,
-                                        height: 50
-                                    }} src={item.fileLink}/>
-                                </td>
-                                <td>
-                                    <button onClick={() => {
-                                        const token = Cookies.get("token");
-                                        axios.get(HOST + "/delete-post", {
-                                            params: {postId: item.id, token: token}
-                                        }).then(response => {
-                                            getPosts();
-                                        })
-
-                                    }}>DELETE
-                                    </button>
-                                </td>
-
                             </tr>
                         )
                     })
                 }
-            </table>
+            </div>
+
         </div>
     )
 }

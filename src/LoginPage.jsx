@@ -118,7 +118,7 @@ function LoginPage() {
                         onClick={()=>
                             navigate("/signup")
                         }>
-                        Sign Up
+                        Sign Up1
                     </button>
                 </div>
             </div>

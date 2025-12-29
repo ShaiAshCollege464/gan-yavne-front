@@ -6,7 +6,6 @@ export default function CustomPage (props) {
 
     return (
         <div>
-            This is some general content
             {props.children}
 
             <button onClick={() => {

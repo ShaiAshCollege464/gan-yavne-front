@@ -170,7 +170,7 @@ function SignupPage() {
                             });
                     }}
                 >
-                    Sign Up
+                    Sign Up2
                 </button>
             </div>
 
