@@ -26,7 +26,7 @@ function SignupPage() {
     const [fullName, setFullName] = useState("");
     const [address, setAddress] = useState("");
     const [areas, setAreas] = useState("");
-    const [plan, setPlan] = useState(0);
+    const [plan, setPlan] = useState(1);
 
     const [signupStatus, setSignupStatus] = useState(SIGNUP_STATUSES.PENDING);
 
