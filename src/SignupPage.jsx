@@ -114,7 +114,7 @@ function SignupPage() {
                             <div>
                                 <input
                                     placeholder="plan"
-                                    type="number"
+                                    type="text"
                                     value={plan}
                                     onChange={(e) =>
                                         setPlan(Number(e.target.value))
