@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 const Button = ({ text, onClick, disabled, variant = 'primary', type = 'button', className = '' }) => {
     const baseStyle = {
         padding: '0.75rem 1.5rem',
