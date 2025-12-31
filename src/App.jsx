@@ -1,25 +1,23 @@
-import './App.css'
-import LoginPage from "./LoginPage.jsx";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import ClientDashboard from "./ClientDashboard.jsx";
-import ProfessionalDashboard from "./ProfessionalDashboard.tsx";
-import DashboardWrapper from "./DashboardWrapper.js";
-import SignupPage from "./SignupPage.jsx";
+import React from 'react';
+import './styles/global.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import LoginPage from "./pages/LoginPage.jsx";
+import SignupPage from "./pages/SignupPage.jsx";
+import DashboardWrapper from "./DashboardWrapper.jsx";
+import Layout from "./components/Layout.jsx";
 
 function App() {
-
     return (
-        <>
-            <BrowserRouter>
+        <BrowserRouter>
+            <Layout>
                 <Routes>
-                    <Route path={"/"} element={<LoginPage />}/>
-                    <Route path={"/signup"} element={<SignupPage />}/>
-                    <Route path={"/dashboard"} element={<DashboardWrapper/>}/>
+                    <Route path={"/"} element={<LoginPage />} />
+                    <Route path={"/signup"} element={<SignupPage />} />
+                    <Route path={"/dashboard"} element={<DashboardWrapper />} />
                 </Routes>
-            </BrowserRouter>
-
-        </>
+            </Layout>
+        </BrowserRouter>
     )
 }
 
-export default App
+export default App;
