@@ -28,7 +28,7 @@ const Layout = ({ children, title, searchValue, setSearchValue }) => {
 
       }}>
         {title && <h1 style={{ fontSize: '2rem', fontWeight: 'bold', margin: 0 }}>{title}</h1>}
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center',minWidth: 0 }}>
           <Input
             placeholder="Search..."
             value={searchValue || ""}
