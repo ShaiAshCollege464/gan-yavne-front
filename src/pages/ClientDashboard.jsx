@@ -7,6 +7,7 @@ import Button from "../components/Button";
 import Modal from "../components/Modal";
 import Input from "../components/Input";
 import Card from "../components/Card";
+import Layout from "../components/Layout";
 
 function ClientDashboard() {
     const NOT_SELECTED_CATEGORY = 0;
@@ -89,20 +90,11 @@ function ClientDashboard() {
     };
 
     return (
-        <div style={{ padding: '2rem 1rem', maxWidth: '1200px', margin: '0 auto' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
-                <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>My Dashboard</h1>
-                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                    <Input
-                        placeholder="Search posts..."
-                        value={searchValue}
-                        onChange={(e) => setSearchValue(e.target.value)}
-                        style={{ marginBottom: 0, width: '300px' }}
-                    />
-                    <Button text="Add New Post" onClick={() => setModalOpen(true)} />
-                </div>
-            </div>
-
+        <Layout
+            title="Client Dashboard"
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+        >
             <Modal
                 title="Create New Post"
                 isOpen={modalOpen}
@@ -164,7 +156,11 @@ function ClientDashboard() {
             </Modal>
 
             <section style={{ marginBottom: '3rem' }}>
-                <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', borderBottom: '2px solid var(--border)', paddingBottom: '0.5rem' }}>My Posts</h2>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '2px solid var(--border)', paddingBottom: '0.5rem' }}>
+                    <h2 style={{ fontSize: '1.5rem', margin: 0 }}>My Posts</h2>
+                    <Button text="Add New Post" onClick={() => setModalOpen(true)} style={{ width: 'auto', padding: '0.5rem 1rem' }} />
+                </div>
+
                 {filter().length > 0 ? (
                     <div style={{
                         display: 'grid',
@@ -236,7 +232,7 @@ function ClientDashboard() {
                     </div>
                 )}
             </section>
-        </div>
+        </Layout>
     )
 }
 

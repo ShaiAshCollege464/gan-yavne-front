@@ -9,13 +9,11 @@ import Layout from "./components/Layout.jsx";
 function App() {
     return (
         <BrowserRouter>
-            <Layout>
-                <Routes>
-                    <Route path={"/"} element={<LoginPage />} />
-                    <Route path={"/signup"} element={<SignupPage />} />
-                    <Route path={"/dashboard"} element={<DashboardWrapper />} />
-                </Routes>
-            </Layout>
+            <Routes>
+                <Route path={"/"} element={<LoginPage />} />
+                <Route path={"/signup"} element={<SignupPage />} />
+                <Route path={"/dashboard"} element={<DashboardWrapper />} />
+            </Routes>
         </BrowserRouter>
     )
 }

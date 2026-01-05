@@ -7,6 +7,7 @@ import Button from "../components/Button";
 import Modal from "../components/Modal";
 import Input from "../components/Input";
 import Card from "../components/Card";
+import Layout from "../components/Layout";
 
 function ProfessionalDashboard() {
     const navigate = useNavigate();
@@ -15,6 +16,7 @@ function ProfessionalDashboard() {
     const [message, setMessage] = useState("");
     const [bid, setBid] = useState(0);
     const [myBids, setMyBids] = useState([]);
+    const [searchValue, setSearchValue] = useState("");
 
     const getPosts = () => {
         const token = Cookies.get("token");
@@ -53,6 +55,12 @@ function ProfessionalDashboard() {
         return myBids.map(item => item.postId).includes(postId);
     }
 
+    const filter = () => {
+        return posts.filter(item => {
+            return item.text.includes(searchValue);
+        })
+    }
+
     const handleBid = () => {
         const token = Cookies.get("token");
         axios.get(HOST + "make-bid", {
@@ -71,11 +79,11 @@ function ProfessionalDashboard() {
     };
 
     return (
-        <div style={{ padding: '2rem 1rem', maxWidth: '1200px', margin: '0 auto' }}>
-            <div style={{ marginBottom: '2rem' }}>
-                <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>Professional Dashboard</h1>
-            </div>
-
+        <Layout
+            title="Professional Dashboard"
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+        >
             <Modal
                 title={selectedPostId > 0 ? `Bid for: ${getPostById()?.text}` : "Make a Bid"}
                 isOpen={selectedPostId > 0}
@@ -108,13 +116,13 @@ function ProfessionalDashboard() {
 
             <section style={{ marginBottom: '3rem' }}>
                 <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', borderBottom: '2px solid var(--border)', paddingBottom: '0.5rem' }}>Available Jobs</h2>
-                {posts.length > 0 ? (
+                {filter().length > 0 ? (
                     <div style={{
                         display: 'grid',
                         gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
                         gap: '1.5rem'
                     }}>
-                        {posts.map(item => (
+                        {filter().map(item => (
                             <Card key={item.id} style={{ display: 'flex', flexDirection: 'column' }}>
                                 <div style={{
                                     height: '200px',
@@ -196,7 +204,7 @@ function ProfessionalDashboard() {
                     </div>
                 )}
             </section>
-        </div>
+        </Layout>
     )
 }
 
