@@ -40,7 +40,8 @@ const Layout = ({children, title, searchValue, setSearchValue}) => {
                         placeholder="Search..."
                         value={searchValue || ""}
                         onChange={(e) => setSearchValue && setSearchValue(e.target.value)}
-                        style={{marginBottom: 0, width: '300px'}}
+                        style={{marginBottom: 0}}
+                        className={"min-w-[300px]"}
                     />
                     <Button
                         text="Logout"

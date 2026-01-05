@@ -1,14 +1,14 @@
 import React from 'react';
 
 
-const Button = ({ text, onClick, disabled, variant = 'primary', type = 'button', className = '' }) => {
+const Button = ({ text, onClick, disabled, variant = 'primary', type = 'button', className }) => {
     const baseStyle = {
         padding: '0.75rem 1.5rem',
         borderRadius: 'var(--radius-md)',
         fontWeight: '600',
         fontSize: '1rem',
         transition: 'all 0.2s ease',
-        width: '100%',
+        width: 'auth',
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -44,7 +44,7 @@ const Button = ({ text, onClick, disabled, variant = 'primary', type = 'button',
             onClick={onClick}
             disabled={disabled}
             style={style}
-            className={`${className}`}
+            className={className}
             onMouseOver={(e) => {
                 if (!disabled && variant === 'primary') e.currentTarget.style.backgroundColor = 'var(--primary-hover)';
             }}

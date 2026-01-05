@@ -1,15 +1,12 @@
 import React from 'react';
+import './Card.css';
 
 const Card = ({ children, title, className = '', style = {} }) => {
     return (
-        <div style={{
-            backgroundColor: 'var(--surface)',
-            borderRadius: 'var(--radius-lg)',
-            padding: '1.5rem',
-            boxShadow: 'var(--shadow-md)',
-            border: '1px solid var(--border)',
-            ...style
-        }} className={className}>
+        <div
+            className={`card-component ${className}`}
+            style={style}
+        >
             {title && (
                 <h3 style={{
                     marginBottom: '1rem',

@@ -1,8 +1,8 @@
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import Cookies from 'js-cookie';
-import { HOST } from "../Constants.js";
+import {HOST} from "../Constants.js";
 import Button from "../components/Button";
 import Modal from "../components/Modal";
 import Input from "../components/Input";
@@ -25,7 +25,7 @@ function ClientDashboard() {
     const getPosts = () => {
         const token = Cookies.get("token");
         axios.get(HOST + "get-user-posts", {
-            params: { token: token }
+            params: {token: token}
         }).then(response => {
             setPosts(response.data.posts);
         })
@@ -34,7 +34,7 @@ function ClientDashboard() {
     const getProposals = () => {
         const token = Cookies.get("token");
         axios.get(HOST + "my-proposals", {
-            params: { token: token }
+            params: {token: token}
         }).then(response => {
             setMyProposals(response.data.bids);
         })
@@ -43,7 +43,7 @@ function ClientDashboard() {
     const getCategories = () => {
         const token = Cookies.get("token");
         axios.get(HOST + "get-all-categories", {
-            params: { token: token }
+            params: {token: token}
         }).then(response => {
             setCategories(response.data.categories);
         })
@@ -69,7 +69,7 @@ function ClientDashboard() {
     const handleAddPost = () => {
         const token = Cookies.get("token");
         axios.get(HOST + "/add-post", {
-            params: { text: postText, area: postArea, fileLink: postFileLink, categoryId: postCategory, token }
+            params: {text: postText, area: postArea, fileLink: postFileLink, categoryId: postCategory, token}
         }).then(response => {
             setPostFileLink("");
             setPostArea("");
@@ -83,7 +83,7 @@ function ClientDashboard() {
     const handleDeletePost = (postId) => {
         const token = Cookies.get("token");
         axios.get(HOST + "/delete-post", {
-            params: { postId: postId, token: token }
+            params: {postId: postId, token: token}
         }).then(response => {
             getPosts();
         })
@@ -108,8 +108,8 @@ function ClientDashboard() {
                         placeholder="What needs to be done?"
                     />
 
-                    <div style={{ marginBottom: '1rem' }}>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Category</label>
+                    <div style={{marginBottom: '1rem'}}>
+                        <label style={{display: 'block', marginBottom: '0.5rem', fontWeight: '500'}}>Category</label>
                         <select
                             value={postCategory}
                             onChange={(e) => setPostCategory(Number(e.target.value))}
@@ -143,22 +143,31 @@ function ClientDashboard() {
                         placeholder="https://..."
                     />
 
-                    <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
-                        <Button text="Cancel" variant="secondary" onClick={() => setModalOpen(false)} style={{ width: 'auto' }} />
+                    <div style={{marginTop: '1.5rem', display: 'flex', justifyContent: 'flex-end', gap: '1rem'}}>
+                        <Button text="Cancel" variant="secondary" onClick={() => setModalOpen(false)}
+                                style={{width: 'auto'}}/>
                         <Button
                             text="Publish Post"
                             disabled={postText === "" || postFileLink === "" || postArea === "" || postCategory === NOT_SELECTED_CATEGORY}
                             onClick={handleAddPost}
-                            style={{ width: 'auto' }}
+                            style={{width: 'auto'}}
                         />
                     </div>
                 </div>
             </Modal>
 
-            <section style={{ marginBottom: '3rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '2px solid var(--border)', paddingBottom: '0.5rem' }}>
-                    <h2 style={{ fontSize: '1.5rem', margin: 0 }}>My Posts</h2>
-                    <Button text="Add New Post" onClick={() => setModalOpen(true)} style={{ width: 'auto', padding: '0.5rem 1rem' }} />
+            <section style={{marginBottom: '3rem'}}>
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '1.5rem',
+                    borderBottom: '2px solid var(--border)',
+                    paddingBottom: '0.5rem'
+                }}>
+                    <h2 style={{fontSize: '1.5rem', margin: 0}}>My Posts</h2>
+                    <Button text="Add New Post" onClick={() => setModalOpen(true)}
+                            style={{width: 'auto', padding: '0.5rem 1rem'}} className={"max-w-[150px]"}/>
                 </div>
 
                 {filter().length > 0 ? (
@@ -168,7 +177,7 @@ function ClientDashboard() {
                         gap: '1.5rem'
                     }}>
                         {filter().map(item => (
-                            <Card key={item.id} style={{ display: 'flex', flexDirection: 'column' }}>
+                            <Card key={item.id} style={{display: 'flex', flexDirection: 'column'}}>
                                 <div style={{
                                     height: '200px',
                                     backgroundImage: `url(${item.fileLink})`,
@@ -176,8 +185,8 @@ function ClientDashboard() {
                                     backgroundPosition: 'center',
                                     borderRadius: 'var(--radius-md)',
                                     marginBottom: '1rem'
-                                }} />
-                                <div style={{ flex: 1 }}>
+                                }}/>
+                                <div style={{flex: 1}}>
                                     <div style={{
                                         display: 'inline-block',
                                         padding: '0.25rem 0.5rem',
@@ -189,8 +198,8 @@ function ClientDashboard() {
                                     }}>
                                         {item.categoryName}
                                     </div>
-                                    <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>{item.text}</h3>
-                                    <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>📍 {item.area}</p>
+                                    <h3 style={{fontSize: '1.25rem', marginBottom: '0.5rem'}}>{item.text}</h3>
+                                    <p style={{color: 'var(--text-secondary)', marginBottom: '1rem'}}>📍 {item.area}</p>
                                 </div>
                                 <Button
                                     text="Delete Post"
@@ -201,20 +210,32 @@ function ClientDashboard() {
                         ))}
                     </div>
                 ) : (
-                    <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary)', backgroundColor: 'var(--surface)', borderRadius: 'var(--radius-lg)' }}>
+                    <div style={{
+                        textAlign: 'center',
+                        padding: '3rem',
+                        color: 'var(--text-secondary)',
+                        backgroundColor: 'var(--surface)',
+                        borderRadius: 'var(--radius-lg)'
+                    }}>
                         No posts found. Start by creating one!
                     </div>
                 )}
             </section>
 
             <section>
-                <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', borderBottom: '2px solid var(--border)', paddingBottom: '0.5rem' }}>Proposals Received</h2>
+                <h2 style={{
+                    fontSize: '1.5rem',
+                    marginBottom: '1.5rem',
+                    borderBottom: '2px solid var(--border)',
+                    paddingBottom: '0.5rem'
+                }}>Proposals Received</h2>
                 {myProposals.length > 0 ? (
-                    <div style={{ display: 'grid', gap: '1rem' }}>
+                    <div style={{display: 'grid', gap: '1rem'}}>
                         {myProposals.map((item, index) => (
-                            <Card key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Card key={index}
+                                  style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                                 <div>
-                                    <h4 style={{ margin: 0, fontSize: '1.1rem' }}>{item.description}</h4>
+                                    <h4 style={{margin: 0, fontSize: '1.1rem'}}>{item.description}</h4>
                                 </div>
                                 <div style={{
                                     fontWeight: 'bold',
@@ -227,7 +248,13 @@ function ClientDashboard() {
                         ))}
                     </div>
                 ) : (
-                    <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary)', backgroundColor: 'var(--surface)', borderRadius: 'var(--radius-lg)' }}>
+                    <div style={{
+                        textAlign: 'center',
+                        padding: '3rem',
+                        color: 'var(--text-secondary)',
+                        backgroundColor: 'var(--surface)',
+                        borderRadius: 'var(--radius-lg)'
+                    }}>
                         No proposals yet.
                     </div>
                 )}
