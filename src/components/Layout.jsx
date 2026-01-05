@@ -16,6 +16,7 @@ const Layout = ({ children, title, searchValue, setSearchValue }) => {
   return (
     <div style={{ padding: '2rem 1rem', maxWidth: '1200px', margin: '0 auto', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <header style={{
+        width: '100%',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -24,6 +25,7 @@ const Layout = ({ children, title, searchValue, setSearchValue }) => {
         borderBottom: '1px solid var(--border)',
         flexWrap: 'wrap',
         gap: '1rem'
+
       }}>
         {title && <h1 style={{ fontSize: '2rem', fontWeight: 'bold', margin: 0 }}>{title}</h1>}
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
