@@ -8,6 +8,8 @@ import Modal from "../components/Modal";
 import Input from "../components/Input";
 import Card from "../components/Card";
 import Layout from "../components/Layout";
+import Proposal from "../components/Proposal.jsx";
+import Post from "../components/Post.jsx";
 
 function ClientDashboard() {
     const NOT_SELECTED_CATEGORY = 0;
@@ -177,36 +179,7 @@ function ClientDashboard() {
                         gap: '1.5rem'
                     }}>
                         {filter().map(item => (
-                            <Card key={item.id} style={{display: 'flex', flexDirection: 'column'}}>
-                                <div style={{
-                                    height: '200px',
-                                    backgroundImage: `url(${item.fileLink})`,
-                                    backgroundSize: 'cover',
-                                    backgroundPosition: 'center',
-                                    borderRadius: 'var(--radius-md)',
-                                    marginBottom: '1rem'
-                                }}/>
-                                <div style={{flex: 1}}>
-                                    <div style={{
-                                        display: 'inline-block',
-                                        padding: '0.25rem 0.5rem',
-                                        backgroundColor: 'var(--primary)',
-                                        color: 'white',
-                                        borderRadius: 'var(--radius-sm)',
-                                        fontSize: '0.8rem',
-                                        marginBottom: '0.5rem'
-                                    }}>
-                                        {item.categoryName}
-                                    </div>
-                                    <h3 style={{fontSize: '1.25rem', marginBottom: '0.5rem'}}>{item.text}</h3>
-                                    <p style={{color: 'var(--text-secondary)', marginBottom: '1rem'}}>📍 {item.area}</p>
-                                </div>
-                                <Button
-                                    text="Delete Post"
-                                    variant="danger"
-                                    onClick={() => handleDeletePost(item.id)}
-                                />
-                            </Card>
+                            <Post item={item}/>
                         ))}
                     </div>
                 ) : (
@@ -232,19 +205,7 @@ function ClientDashboard() {
                 {myProposals.length > 0 ? (
                     <div style={{display: 'grid', gap: '1rem'}}>
                         {myProposals.map((item, index) => (
-                            <Card key={index}
-                                  style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                                <div>
-                                    <h4 style={{margin: 0, fontSize: '1.1rem'}}>{item.description}</h4>
-                                </div>
-                                <div style={{
-                                    fontWeight: 'bold',
-                                    fontSize: '1.2rem',
-                                    color: 'var(--primary)'
-                                }}>
-                                    {item.proposedPrice} ₪
-                                </div>
-                            </Card>
+                            <Proposal index={index} item={item}/>
                         ))}
                     </div>
                 ) : (
