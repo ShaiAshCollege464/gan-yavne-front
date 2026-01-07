@@ -2,10 +2,30 @@ import Button from "./Button.jsx";
 import Proposal from "./Proposal.jsx";
 import Card from "./Card.jsx";
 import {useNavigate} from "react-router-dom";
+import Cookies from "js-cookie";
+import axios from "axios";
+import {HOST} from "../Constants.js";
 
 function Post (props) {
     const item = props.item;
     const navigate = useNavigate();
+
+
+    const handleDeletePost = (postId,e) => {
+        e.stopPropagation();
+        const token = Cookies.get("token");
+        axios.get(HOST + "/delete-post", {
+            params: {postId: postId, token: token}
+        }).then(response => {
+            if (props.showBids){
+                navigate("/dashboard")
+            }else {
+                props.getPosts();
+            }
+        })
+    };
+
+
     return (
         <div onClick={() => {
             if (!props.showBids) {
@@ -39,7 +59,7 @@ function Post (props) {
                 <Button
                     text="Delete Post"
                     variant="danger"
-                    onClick={() => handleDeletePost(item.id)}
+                    onClick={(e) => handleDeletePost(item.id,e)}
                 />
                 {
                     props.showBids &&

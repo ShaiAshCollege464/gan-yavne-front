@@ -26,7 +26,7 @@ function PostPage () {
         <>
             {
                 post &&
-                <Post item={post} showBids={true}/>
+                <Post item={post} showBids={true} />
             }
         </>
     )

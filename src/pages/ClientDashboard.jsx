@@ -82,14 +82,7 @@ function ClientDashboard() {
         })
     };
 
-    const handleDeletePost = (postId) => {
-        const token = Cookies.get("token");
-        axios.get(HOST + "/delete-post", {
-            params: {postId: postId, token: token}
-        }).then(response => {
-            getPosts();
-        })
-    };
+
 
     return (
         <Layout
@@ -179,7 +172,7 @@ function ClientDashboard() {
                         gap: '1.5rem'
                     }}>
                         {filter().map(item => (
-                            <Post item={item}/>
+                            <Post item={item} getPosts = {getPosts}/>
                         ))}
                     </div>
                 ) : (
