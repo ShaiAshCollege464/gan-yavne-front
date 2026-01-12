@@ -8,6 +8,7 @@ import Modal from "../components/Modal";
 import Input from "../components/Input";
 import Card from "../components/Card";
 import Layout from "../components/Layout";
+import Post from "../components/Post.jsx";
 
 function ProfessionalDashboard() {
     const navigate = useNavigate();
@@ -26,6 +27,7 @@ function ProfessionalDashboard() {
             setPosts(response.data.posts);
         })
     }
+
 
     const getMyBids = () => {
         const token = Cookies.get("token");
@@ -59,6 +61,10 @@ function ProfessionalDashboard() {
         return posts.filter(item => {
             return item.text.includes(searchValue);
         })
+    }
+    const handleBidClick = (id,e) =>{
+        e.stopPropagation();
+        setSelectedPostId(id);
     }
 
     const handleBid = () => {
@@ -123,48 +129,7 @@ function ProfessionalDashboard() {
                         gap: '1.5rem'
                     }}>
                         {filter().map(item => (
-                            <Card key={item.id} style={{ display: 'flex', flexDirection: 'column' }}>
-                                <div style={{
-                                    height: '200px',
-                                    backgroundImage: `url(${item.fileLink})`,
-                                    backgroundSize: 'cover',
-                                    backgroundPosition: 'center',
-                                    borderRadius: 'var(--radius-md)',
-                                    marginBottom: '1rem'
-                                }} />
-                                <div style={{ flex: 1 }}>
-                                    <div style={{
-                                        display: 'inline-block',
-                                        padding: '0.25rem 0.5rem',
-                                        backgroundColor: 'var(--primary)',
-                                        color: 'white',
-                                        borderRadius: 'var(--radius-sm)',
-                                        fontSize: '0.8rem',
-                                        marginBottom: '0.5rem'
-                                    }}>
-                                        {item.categoryName}
-                                    </div>
-                                    <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>{item.text}</h3>
-                                    <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>📍 {item.area}</p>
-                                </div>
-                                {!isAlreadyBided(item.id) ? (
-                                    <Button
-                                        text="Place a Bid"
-                                        onClick={() => setSelectedPostId(item.id)}
-                                    />
-                                ) : (
-                                    <div style={{
-                                        padding: '0.75rem',
-                                        textAlign: 'center',
-                                        backgroundColor: '#ecfdf5',
-                                        color: '#059669',
-                                        borderRadius: 'var(--radius-md)',
-                                        fontWeight: '600'
-                                    }}>
-                                        ✓ Bid Placed
-                                    </div>
-                                )}
-                            </Card>
+                            <Post key = {item.id} item={item} client = {false} isAlreadyBided = {isAlreadyBided} handleBidClick = {handleBidClick}  />
                         ))}
                     </div>
                 ) : (

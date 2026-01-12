@@ -172,7 +172,7 @@ function ClientDashboard() {
                         gap: '1.5rem'
                     }}>
                         {filter().map(item => (
-                            <Post item={item} getPosts = {getPosts}/>
+                            <Post key = {item.id} item={item} getPosts = {getPosts} client = {true}/>
                         ))}
                     </div>
                 ) : (

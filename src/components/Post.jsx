@@ -56,34 +56,60 @@ function Post (props) {
                     <h3 style={{fontSize: '1.25rem', marginBottom: '0.5rem'}}>{item.text}</h3>
                     <p style={{color: 'var(--text-secondary)', marginBottom: '1rem'}}>📍 {item.area}</p>
                 </div>
-                <Button
-                    text="Delete Post"
-                    variant="danger"
-                    onClick={(e) => handleDeletePost(item.id,e)}
-                />
-                {
-                    props.showBids &&
+                {props.client ? (
                     <>
-                        {
-                            item.bids.length == 0 ?
-                                <>
-                                    No Bids Yes
-                                </>
-                                :
-                                <>
-                                    {item.bids.length} Bids
-                                </>
-                        }
-                        {
-                            item.bids.map((item, index) => {
-                                return (
-                                    <Proposal item={item} index={index}/>
-                                )
-                            })
+                        <Button
+                            text="Delete Post"
+                            variant="danger"
+                            onClick={(e) => handleDeletePost(item.id,e)}
+                        />
+                        {props.showBids &&
+                            <>
+                                {
+                                    item.bids.length == 0 ?
+                                        <>
+                                            No Bids Yes
+                                        </>
+                                        :
+                                        <>
+                                            {item.bids.length} Bids
+                                        </>
+                                }
+                                {
+                                    item.bids.map((item, index) => {
+                                        return (
+                                            <Proposal item={item} index={index}/>
+                                        )
+                                    })
+                                }
+                            </>
                         }
                     </>
+                ) : (
+                    !props.showBids && (
+                        <>
+                            {!props.isAlreadyBided(item.id) ? (
+                                <Button
+                                    text="Place a Bid"
+                                    onClick={(e) => props.handleBidClick(item.id,e)}
+                                />
+                            ) : (
+                                <div style={{
+                                    padding: '0.75rem',
+                                    textAlign: 'center',
+                                    backgroundColor: '#ecfdf5',
+                                    color: '#059669',
+                                    borderRadius: 'var(--radius-md)',
+                                    fontWeight: '600'
+                                }}>
+                                    ✓ Bid Placed
+                                </div>
+                            )}
+                        </>
+                    )
+                )}
 
-                }
+
             </Card>
 
         </div>
