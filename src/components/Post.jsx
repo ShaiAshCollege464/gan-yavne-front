@@ -109,7 +109,7 @@ function Post (props) {
                     ) : (
                         <>
                             {item.bids.length > 0 ? (
-                                <Proposal item = {item} index = {item.id}/>
+                                <Proposal item = {item.bids[0]} index = {item.bids[0].id}/>
                             ) : (
                                 <>
                                     No Bid Yet
