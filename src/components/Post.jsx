@@ -86,7 +86,7 @@ function Post (props) {
                         }
                     </>
                 ) : (
-                    !props.showBids && (
+                    !props.showBids ? (
                         <>
                             {!props.isAlreadyBided(item.id) ? (
                                 <Button
@@ -104,6 +104,16 @@ function Post (props) {
                                 }}>
                                     ✓ Bid Placed
                                 </div>
+                            )}
+                        </>
+                    ) : (
+                        <>
+                            {item.bids.length > 0 ? (
+                                <Proposal item = {item} index = {item.id}/>
+                            ) : (
+                                <>
+                                    No Bid Yet
+                                </>
                             )}
                         </>
                     )
