@@ -176,7 +176,7 @@ function SignupPage() {
                     <Button
                         text="Sign Up"
                         onClick={handleSignup}
-                        disabled={!isFormValid()}
+
                     />
                     <div style={{ textAlign: 'center', marginTop: '1rem' }}>
                         <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Already have an account? </span>

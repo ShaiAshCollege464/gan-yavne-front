@@ -9,6 +9,51 @@ function BidPage () {
     const[description, setDescription] = useState(null);
     const[conversation, setConversation] = useState([])
     const[newMessage, setNewMessage] = useState("");
+    const[messages, setMessages] = useState("");
+    const[typing, setTyping] = useState(false);
+
+    useEffect(() => {
+        const token = Cookies.get("token");
+        const listener = new EventSource(HOST + "/subscribe?token=" + token);
+
+        listener.addEventListener("message", (event) => {
+            const message = JSON.parse(event.data);
+            const messageReceived = {
+                message: message.content,
+                sender: message.sender,
+                time: message.time
+            };
+            setConversation((prevConversation) => [...prevConversation, messageReceived]);
+        });
+
+        listener.addEventListener("typing", (event) => {
+            setTyping(true);
+        });
+
+        return () => {
+            listener.close();
+        };
+    }, []);
+
+
+    useEffect(() => {
+        const token = Cookies.get("token");
+        axios.get(HOST + "typing", {
+            params: { token, bidId: id}
+        }).then(response => {
+        }).catch(err => {
+        });
+
+    }, [id, newMessage])
+
+    useEffect(() => {
+        if (typing) {
+            setTimeout(() => {
+                setTyping(false);
+            }, 10000)
+        }
+    }, [typing]);
+
 
 
 
@@ -74,6 +119,16 @@ function BidPage () {
                         }}>Send</button>
                     </div>
                 </>
+            }
+            {
+                typing ?
+                <>
+                    Someone is typing...
+                </>
+                    :
+                    <>
+                    NOT TYPING
+                    </>
             }
         </>
     )
